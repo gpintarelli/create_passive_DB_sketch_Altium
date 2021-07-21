@@ -77,23 +77,9 @@ for res_scale_rage in range(num_decades-1):
         #cursor.execute("insert into Resistor_SMD([ID],[Value]) values(?, 1)", (data, ))
         #cursor.execute("insert into Resistor_SMD([ID],[Comment]) values(?, ?)", (data, E96_RES_TABLE[id_loop]))
         
-        #res_value = E96_RES_TABLE[loop_res_value]
+        res_value = str(round(E96_RES_TABLE[loop_res_value]*10**res_scale_rage,3))
         
-        # 1m, 10m, 100m (1m to 999m)
-        if res_scale_rage < 3: 
-            res_value = str(E96_RES_TABLE[loop_res_value]*10**res_scale_rage) + 'm'
 
-        # 1, 10, 100 (1 to 999R)
-        elif res_scale_rage >= 3 and res_scale_rage < 6: 
-            res_value = str(E96_RES_TABLE[loop_res_value]*10**res_scale_rage-3) + 'R'
-
-        # 1k, 10k, 1000k (1k to 999k)
-        elif res_scale_rage >= 6 and res_scale_rage < 9: 
-            res_value = str(E96_RES_TABLE[loop_res_value]*10**res_scale_rage-6) + 'k'
-
-        # 1M, 10M, 100M (1M to 100M)
-        elif res_scale_rage >= 6 and res_scale_rage < 9: 
-            res_value = str(E96_RES_TABLE[loop_res_value]*10**res_scale_rage-9) + 'M'
         
         make_description = 'RES SMD ' + str(res_value) + ' \u03A9 ' + '\u00B1' + PREC_TABLE[pos_prec_table] + '% ' + POWER_TABLE[pos_power_table] + 'W'
         foot1_ref = FOORPRINT_REF_TABLE[pos_foot_table]
