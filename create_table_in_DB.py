@@ -47,7 +47,7 @@ PREC_TABLE= ["1", "5"] # Percentual values
 
 POWER_TABLE= ["1/10", "1/8", "1/4"] # Watts values
 
-FOORPRINT_REF_TABLE= ["0603", "0805", "1206"]
+FOORPRINT_REF_TABLE= ["0402", "0603", "0805", "1206"]
 
 lib_ref = 'RES'
 
