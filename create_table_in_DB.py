@@ -65,53 +65,50 @@ cursor.execute('select * from Resistor_SMD')
 for row in cursor.fetchall():
     print (row)
 
-pos_prec_table =0 
+#pos_prec_table =0 
 pos_power_table = 0
 pos_foot_table = 0
 id_DB = 1
 
 
 #Sample insert
-for res_scale_rage in range(num_decades-1):
-    for loop_res_value in range (len(E96_RES_TABLE)):
-        print(id_DB)
-        #cursor.execute("insert into Resistor_SMD([ID],[Value]) values(?, 1)", (data, ))
-        #cursor.execute("insert into Resistor_SMD([ID],[Comment]) values(?, ?)", (data, E96_RES_TABLE[id_loop]))
-        
-        #res_value = (round(E96_RES_TABLE[loop_res_value]*10**res_scale_rage,3))
-
-
-        # 1m, 10m, 100m (1m to 999m)
-        if res_scale_rage < 3: 
-            res_value_str = str(round(E96_RES_TABLE[loop_res_value]*10**res_scale_rage,3)) + 'm'
+for pos_prec_table in range(len(PREC_TABLE)):
+    for res_scale_rage in range(num_decades-1):
+        for loop_res_value in range (len(E96_RES_TABLE)):
+            print(id_DB)
+            #cursor.execute("insert into Resistor_SMD([ID],[Value]) values(?, 1)", (data, ))
+            #cursor.execute("insert into Resistor_SMD([ID],[Comment]) values(?, ?)", (data, E96_RES_TABLE[id_loop]))
             
-        # 1, 10, 100 (1 to 999R)
-        elif res_scale_rage >= 3 and res_scale_rage < 6: 
-            res_value_str = str(round(E96_RES_TABLE[loop_res_value]*10**(res_scale_rage-3),3)) + 'R'
+            #res_value = (round(E96_RES_TABLE[loop_res_value]*10**res_scale_rage,3))
 
-        # 1k, 10k, 1000k (1k to 999k)
-        elif res_scale_rage >= 6 and res_scale_rage < 9:  
-            res_value_str = str(round(E96_RES_TABLE[loop_res_value]*10**(res_scale_rage-6),3)) + 'k'
+            # 1m, 10m, 100m (1m to 999m)
+            if res_scale_rage < 3: 
+                res_value_str = str(round(E96_RES_TABLE[loop_res_value]*10**res_scale_rage,3)) + 'm'
+                
+            # 1, 10, 100 (1 to 999R)
+            elif res_scale_rage >= 3 and res_scale_rage < 6: 
+                res_value_str = str(round(E96_RES_TABLE[loop_res_value]*10**(res_scale_rage-3),3)) + 'R'
 
-        # 1M, 10M, 100M (1M to 100M)
-        elif res_scale_rage >= 9 and res_scale_rage < 12:  
-            res_value_str = str(round(E96_RES_TABLE[loop_res_value]*10**(res_scale_rage-9),3)) + 'M'
-            
-        else:
-            res_value_str = str(0)
+            # 1k, 10k, 1000k (1k to 999k)
+            elif res_scale_rage >= 6 and res_scale_rage < 9:  
+                res_value_str = str(round(E96_RES_TABLE[loop_res_value]*10**(res_scale_rage-6),3)) + 'k'
+
+            # 1M, 10M, 100M (1M to 100M)
+            elif res_scale_rage >= 9 and res_scale_rage < 12:  
+                res_value_str = str(round(E96_RES_TABLE[loop_res_value]*10**(res_scale_rage-9),3)) + 'M'
+                
+            else:
+                res_value_str = str(0)
+
+            make_description = 'RES SMD ' + res_value_str + ' \u03A9 ' + '\u00B1' + PREC_TABLE[pos_prec_table] + '% ' + POWER_TABLE[pos_power_table] + 'W'
+            foot1_ref = FOORPRINT_REF_TABLE[pos_foot_table]
+            foot2_ref = FOORPRINT_REF_TABLE[pos_foot_table+1]
+            foot3_ref = FOORPRINT_REF_TABLE[pos_foot_table+2]
+            cursor.execute("insert into Resistor_SMD([ID],[Description],[Comment],[Library Ref],[Footprint Ref 1],[Footprint Ref 2],[Footprint Ref 3]) values(?, ?, ?, ?, ?, ?, ?)", (id_DB, make_description, res_value_str, lib_ref, foot1_ref, foot2_ref, foot3_ref))
+            id_DB=id_DB+1
+
+
         
-        #res_value_str = str(res_value)
-
-            
-
-        
-        
-        make_description = 'RES SMD ' + res_value_str + ' \u03A9 ' + '\u00B1' + PREC_TABLE[pos_prec_table] + '% ' + POWER_TABLE[pos_power_table] + 'W'
-        foot1_ref = FOORPRINT_REF_TABLE[pos_foot_table]
-        foot2_ref = FOORPRINT_REF_TABLE[pos_foot_table+1]
-        foot3_ref = FOORPRINT_REF_TABLE[pos_foot_table+2]
-        cursor.execute("insert into Resistor_SMD([ID],[Description],[Comment],[Library Ref],[Footprint Ref 1],[Footprint Ref 2],[Footprint Ref 3]) values(?, ?, ?, ?, ?, ?, ?)", (id_DB, make_description, res_value_str, lib_ref, foot1_ref, foot2_ref, foot3_ref))
-        id_DB=id_DB+1
 cursor.commit()
 
 #
