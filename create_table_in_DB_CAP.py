@@ -1,45 +1,17 @@
 ################################################################################################
-# Create resistor DB
+# Create capacitor DB
 #
 # Description: Auto. create rows for SMT resistor values in the MS Access Altium DB
 # Database: ID, Value, Description, Library Ref, Part Number, Footprint Ref, Footprint Ref 1,  Footprint Ref 2,  Footprint Ref 3
 # Changelog:
-# - 21/07/2021 - GBPINTARELLI deploy V1.0
+# - 22/07/2021 - GBPINTARELLI deploy V1.0
 ################################################################################################
 
 # Sample resistor table
-E96_RES_TABLE= [1.00,	1.02,	1.05,
-1.07,	1.10,	1.13,
-1.15,	1.18,	1.21,
-1.24,	1.27,	1.30,
-1.33,	1.37,	1.40,
-1.43,	1.47,	1.50,
-1.54,	1.58,	1.62,
-1.65,	1.69,	1.74,
-1.78,	1.82,	1.87,
-1.91,	1.96,	2.00,
-2.05,	2.10,	2.16,
-2.21,	2.26,	2.32,
-2.37,	2.43,	2.49,
-2.55,	2.61,	2.67,
-2.74,	2.80,	2.87,
-2.94,	3.01,	3.09,
-3.16,	3.24,	3.32,
-3.40,	3.48,	3.57,
-3.65,	3.74,	3.83,
-3.92,	4.02,	4.12,
-4.22,	4.32,	4.42,
-4.53,	4.64,	4.75,
-4.87,	4.99,	5.11,
-5.23,	5.36,	5.49,
-5.62,	5.76,	5.90,
-6.04,	6.19,	6.34,
-6.49,	6.65,	6.81,
-6.98,	7.15,	7.32,
-7.50,	7.68,	7.87,
-8.06,	8.25,	8.45,
-8.66,	8.87,	9.09,
-9.31,	9.53,	9.76]
+CAP_TABLE= [1.0,   1.2,   1.5,
+            1.8,   2.2,   2.7,
+            3.3,   3.9,   4.7,
+            5.6,   6.8,   8.2]
 
 num_decades = 12 # From 1m to 100M ohm
 
@@ -78,8 +50,8 @@ for pos_power_table in range(len(POWER_TABLE)):
         for res_scale_rage in range(num_decades-1):
             for loop_res_value in range (len(E96_RES_TABLE)):
                 print(id_DB)
-                #cursor.execute("insert into Resistor_SMD([ID],[Value]) values(?, 1)", (data, ))
-                #cursor.execute("insert into Resistor_SMD([ID],[Comment]) values(?, ?)", (data, E96_RES_TABLE[id_loop]))
+                #cursor.execute("insert into Resistor_SMD([Id],[Value]) values(?, 1)", (data, ))
+                #cursor.execute("insert into Resistor_SMD([Id],[Comment]) values(?, ?)", (data, E96_RES_TABLE[id_loop]))
                 
                 #res_value = (round(E96_RES_TABLE[loop_res_value]*10**res_scale_rage,3))
 
@@ -103,7 +75,7 @@ for pos_power_table in range(len(POWER_TABLE)):
                     res_value_str = str(x)
 
                 make_description = 'RES SMD ' + res_value_str + ' \u03A9 ' + '\u00B1' + PREC_TABLE[pos_prec_table] + '% ' + POWER_TABLE[pos_power_table] + 'W'
-                cursor.execute("insert into Resistor_SMD([ID],[Description],[Comment],[Library Ref],[Footprint Ref 1],[Footprint Ref 2],[Footprint Ref 3],[Footprint Ref 4]) values(?, ?, ?, ?, ?, ?, ?, ?)", (id_DB, make_description, res_value_str, lib_ref, foot1_ref, foot2_ref, foot3_ref, foot4_ref))
+                cursor.execute("insert into Resistor_SMD([Id],[Description],[Comment],[Library Ref],[Footprint Ref 1],[Footprint Ref 2],[Footprint Ref 3],[Footprint Ref 4]) values(?, ?, ?, ?, ?, ?, ?, ?)", (id_DB, make_description, res_value_str, lib_ref, foot1_ref, foot2_ref, foot3_ref, foot4_ref))
                 id_DB=id_DB+1
 
 
@@ -112,7 +84,7 @@ res_value_str = str(0)
 for pos_power_table in range (len(POWER_TABLE)):
     print(id_DB)         
     make_description = 'RES SMD ' + res_value_str + 'R \u03A9 ' + POWER_TABLE[pos_power_table] + 'W'
-    cursor.execute("insert into Resistor_SMD([ID],[Description],[Comment],[Library Ref],[Footprint Ref 1],[Footprint Ref 2],[Footprint Ref 3],[Footprint Ref 4]) values(?, ?, ?, ?, ?, ?, ?, ?)", (id_DB, make_description, res_value_str, lib_ref, foot1_ref, foot2_ref, foot3_ref, foot4_ref))
+    cursor.execute("insert into Resistor_SMD([Id],[Description],[Comment],[Library Ref],[Footprint Ref 1],[Footprint Ref 2],[Footprint Ref 3],[Footprint Ref 4]) values(?, ?, ?, ?, ?, ?, ?, ?)", (id_DB, make_description, res_value_str, lib_ref, foot1_ref, foot2_ref, foot3_ref, foot4_ref))
     id_DB=id_DB+1
     
 # 100M
@@ -121,7 +93,7 @@ for pos_power_table in range(len(POWER_TABLE)):
     for pos_prec_table in range(len(PREC_TABLE)):
         print(id_DB)
         make_description = 'RES SMD ' + res_value_str + ' \u03A9 ' + '\u00B1' + PREC_TABLE[pos_prec_table] + '% ' + POWER_TABLE[pos_power_table] + 'W'
-        cursor.execute("insert into Resistor_SMD([ID],[Description],[Comment],[Library Ref],[Footprint Ref 1],[Footprint Ref 2],[Footprint Ref 3],[Footprint Ref 4]) values(?, ?, ?, ?, ?, ?, ?, ?)", (id_DB, make_description, res_value_str, lib_ref, foot1_ref, foot2_ref, foot3_ref, foot4_ref))
+        cursor.execute("insert into Resistor_SMD([Id],[Description],[Comment],[Library Ref],[Footprint Ref 1],[Footprint Ref 2],[Footprint Ref 3],[Footprint Ref 4]) values(?, ?, ?, ?, ?, ?, ?, ?)", (id_DB, make_description, res_value_str, lib_ref, foot1_ref, foot2_ref, foot3_ref, foot4_ref))
         id_DB=id_DB+1
 
 # Commint to DB
