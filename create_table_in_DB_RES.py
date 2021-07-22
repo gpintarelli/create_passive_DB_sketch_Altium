@@ -105,7 +105,7 @@ for pos_power_table in range(len(POWER_TABLE)):
                 else:
                     res_value_str = str(x)
 
-                make_description = 'RES SMD ' + res_value_str + ' \u03A9 ' + '\u00B1' + PREC_TABLE[pos_prec_table] + '% ' + POWER_TABLE[pos_power_table] + 'W'
+                make_description = 'RES SMD ' + res_value_str + '\u03A9 ' + '\u00B1' + PREC_TABLE[pos_prec_table] + '% ' + POWER_TABLE[pos_power_table] + 'W'
                 cursor.execute("insert into Resistor_SMD([Id],[Description],[Comment],[Part Number],[Manufacturer],[Library Ref],[Footprint Ref 1],[Footprint Ref 2],[Footprint Ref 3],[Footprint Ref 4]) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (id_DB, make_description, res_value_str, pn, manu, lib_ref, foot1_ref, foot2_ref, foot3_ref, foot4_ref))
                 id_DB=id_DB+1
 
@@ -114,7 +114,7 @@ for pos_power_table in range(len(POWER_TABLE)):
 res_value_str = str(0)
 for pos_power_table in range (len(POWER_TABLE)):
     print(id_DB)         
-    make_description = 'RES SMD ' + res_value_str + 'R \u03A9 ' + POWER_TABLE[pos_power_table] + 'W'
+    make_description = 'RES SMD ' + res_value_str + 'R\u03A9 ' + POWER_TABLE[pos_power_table] + 'W'
     cursor.execute("insert into Resistor_SMD([Id],[Description],[Comment],[Part Number],[Manufacturer],[Library Ref],[Footprint Ref 1],[Footprint Ref 2],[Footprint Ref 3],[Footprint Ref 4]) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (id_DB, make_description, res_value_str, pn, manu, lib_ref, foot1_ref, foot2_ref, foot3_ref, foot4_ref))
     id_DB=id_DB+1
     
@@ -123,7 +123,7 @@ res_value_str = str(100) + 'M'
 for pos_power_table in range(len(POWER_TABLE)):
     for pos_prec_table in range(len(PREC_TABLE)):
         print(id_DB)
-        make_description = 'RES SMD ' + res_value_str + ' \u03A9 ' + '\u00B1' + PREC_TABLE[pos_prec_table] + '% ' + POWER_TABLE[pos_power_table] + 'W'
+        make_description = 'RES SMD ' + res_value_str + '\u03A9 ' + '\u00B1' + PREC_TABLE[pos_prec_table] + '% ' + POWER_TABLE[pos_power_table] + 'W'
         cursor.execute("insert into Resistor_SMD([Id],[Description],[Comment],[Part Number],[Manufacturer],[Library Ref],[Footprint Ref 1],[Footprint Ref 2],[Footprint Ref 3],[Footprint Ref 4]) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (id_DB, make_description, res_value_str, pn, manu, lib_ref, foot1_ref, foot2_ref, foot3_ref, foot4_ref))
         id_DB=id_DB+1
 

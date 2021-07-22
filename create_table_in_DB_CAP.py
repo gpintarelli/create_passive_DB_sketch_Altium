@@ -13,88 +13,96 @@ CAP_TABLE= [1.0,   1.2,   1.5,
             3.3,   3.9,   4.7,
             5.6,   6.8,   8.2]
 
-num_decades = 12 # From 1m to 100M ohm
+num_decades = 6 # From 1p to 100n F
 
-PREC_TABLE= ["1", "5"] # Percentual values
+PREC_TABLE= ["5", "10"] # Percentual values for  1p to 100n F
 
-POWER_TABLE= ["1/10", "1/8", "1/4"] # Watts values
+PREC_TABLE_u= ["10", "20"] # Percentual values for  1p to 100n F
 
-FOORPRINT_REF_TABLE= ["0402", "0603", "0805", "1206"] # Foot values
+VOLTAGE_TABLE= ["25", "50"] # Voltage values
 
-lib_ref = 'RES' # Sch lib
+FOOTPRINT_REF_TABLE= ["C0402", "C0603", "C0805", "C1206"] # Foot values
+
+TYPE_DI = ["X7R"] # Theres no loop regarding type, this is reserved for future implementation
+
+lib_ref = 'CAP' # Sch lib
 
 import pyodbc
 
 # Connect to DB
 conn = pyodbc.connect(r'Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=D:\AlitumLibrary.accdb;')
 cursor = conn.cursor()
-cursor.execute('select * from Resistor_SMD')
+cursor.execute('select * from Ceramic_Capacitor_SMD')
 
 # Print existing data in the DB   
 for row in cursor.fetchall():
     print (row)
+
+pn = 'X'
+manu = 'X'
 
 #pos_prec_table =0 
 #pos_power_table = 0
 pos_foot_table = 0
 id_DB = 1
 
-foot1_ref = FOORPRINT_REF_TABLE[pos_foot_table]
-foot2_ref = FOORPRINT_REF_TABLE[pos_foot_table+1]
-foot3_ref = FOORPRINT_REF_TABLE[pos_foot_table+2]
-foot4_ref = FOORPRINT_REF_TABLE[pos_foot_table+3]
+foot1_ref = FOOTPRINT_REF_TABLE[pos_foot_table]
+foot2_ref = FOOTPRINT_REF_TABLE[pos_foot_table+1]
+foot3_ref = FOOTPRINT_REF_TABLE[pos_foot_table+2]
+foot4_ref = FOOTPRINT_REF_TABLE[pos_foot_table+3]
+
+flag_type_uF = 0
 
 #Sample insert
-for pos_power_table in range(len(POWER_TABLE)):
+# pF and nF range
+for pos_volt_table in range(len(VOLTAGE_TABLE)):
     for pos_prec_table in range(len(PREC_TABLE)):
-        for res_scale_rage in range(num_decades-1):
-            for loop_res_value in range (len(E96_RES_TABLE)):
+        for cap_scale_rage in range(num_decades):
+            for loop_cap_value in range (len(CAP_TABLE)):
                 print(id_DB)
                 #cursor.execute("insert into Resistor_SMD([Id],[Value]) values(?, 1)", (data, ))
                 #cursor.execute("insert into Resistor_SMD([Id],[Comment]) values(?, ?)", (data, E96_RES_TABLE[id_loop]))
                 
                 #res_value = (round(E96_RES_TABLE[loop_res_value]*10**res_scale_rage,3))
 
-                # 1m, 10m, 100m (1m to 999m)
-                if res_scale_rage < 3: 
-                    res_value_str = str(round(E96_RES_TABLE[loop_res_value]*10**res_scale_rage,3)) + 'm'
+                # 1p, 10p, 100p (1p to 999p)
+                if cap_scale_rage < 3:
+                    cap_value_str = str(round(CAP_TABLE[loop_cap_value]*10**cap_scale_rage,3)) + 'p'
                     
-                # 1, 10, 100 (1 to 999R)
-                elif res_scale_rage >= 3 and res_scale_rage < 6: 
-                    res_value_str = str(round(E96_RES_TABLE[loop_res_value]*10**(res_scale_rage-3),3)) + 'R'
+                # 1n, 10n, 100n (1 to 999n)
+                elif cap_scale_rage >= 3 and cap_scale_rage < 6:
+                    cap_value_str = str(round(CAP_TABLE[loop_cap_value]*10**(cap_scale_rage-3),3)) + 'n'
 
-                # 1k, 10k, 1000k (1k to 999k)
-                elif res_scale_rage >= 6 and res_scale_rage < 9:  
-                    res_value_str = str(round(E96_RES_TABLE[loop_res_value]*10**(res_scale_rage-6),3)) + 'k'
-
-                # 1M, 10M, 100M (1M to 100M)
-                elif res_scale_rage >= 9 and res_scale_rage < 12:  
-                    res_value_str = str(round(E96_RES_TABLE[loop_res_value]*10**(res_scale_rage-9),3)) + 'M'
+                ## 1u, 10u, 1000u (1k to 999u)
+                #elif cap_scale_rage >= 6 and res_scale_rage < 9:
+                #    res_value_str = str(round(CAP_TABLE[loop_cap_value]*10**(cap_scale_rage-6),3)) + 'u'
                     
                 else:
-                    res_value_str = str(x)
+                    cap_value_str = str(x)
 
-                make_description = 'RES SMD ' + res_value_str + ' \u03A9 ' + '\u00B1' + PREC_TABLE[pos_prec_table] + '% ' + POWER_TABLE[pos_power_table] + 'W'
-                cursor.execute("insert into Resistor_SMD([Id],[Description],[Comment],[Library Ref],[Footprint Ref 1],[Footprint Ref 2],[Footprint Ref 3],[Footprint Ref 4]) values(?, ?, ?, ?, ?, ?, ?, ?)", (id_DB, make_description, res_value_str, lib_ref, foot1_ref, foot2_ref, foot3_ref, foot4_ref))
+                make_description = 'RES SMD ' + cap_value_str + 'F ' + '\u00B1' + PREC_TABLE[pos_prec_table] + '% ' + VOLTAGE_TABLE[pos_volt_table] + 'V ' + TYPE_DI[0]
+                cursor.execute("insert into Ceramic_Capacitor_SMD([Id],[Description],[Comment],[Part Number],[Manufacturer],[Library Ref],[Footprint Ref 1],[Footprint Ref 2],[Footprint Ref 3],[Footprint Ref 4]) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (id_DB, make_description, cap_value_str, pn, manu, lib_ref, foot1_ref, foot2_ref, foot3_ref, foot4_ref))
                 id_DB=id_DB+1
 
+# uF range
+for pos_volt_table in range(len(VOLTAGE_TABLE)):
+    for pos_prec_table in range(len(PREC_TABLE_u)):
+        for cap_scale_rage in range(2): # fixed range 1 to 99uF
+            for loop_cap_value in range (len(CAP_TABLE)):
+                print(id_DB)
+                #cursor.execute("insert into Resistor_SMD([Id],[Value]) values(?, 1)", (data, ))
+                #cursor.execute("insert into Resistor_SMD([Id],[Comment]) values(?, ?)", (data, E96_RES_TABLE[id_loop]))
+                
+                #res_value = (round(E96_RES_TABLE[loop_res_value]*10**res_scale_rage,3))
 
-# 0R
-res_value_str = str(0)
-for pos_power_table in range (len(POWER_TABLE)):
-    print(id_DB)         
-    make_description = 'RES SMD ' + res_value_str + 'R \u03A9 ' + POWER_TABLE[pos_power_table] + 'W'
-    cursor.execute("insert into Resistor_SMD([Id],[Description],[Comment],[Library Ref],[Footprint Ref 1],[Footprint Ref 2],[Footprint Ref 3],[Footprint Ref 4]) values(?, ?, ?, ?, ?, ?, ?, ?)", (id_DB, make_description, res_value_str, lib_ref, foot1_ref, foot2_ref, foot3_ref, foot4_ref))
-    id_DB=id_DB+1
+                # 1u, 10u, 1000u (1k to 999u)
+                cap_value_str = str(round(CAP_TABLE[loop_cap_value]*10**cap_scale_rage,3)) + 'u'
+
+                make_description = 'RES SMD ' + cap_value_str + 'F ' + '\u00B1' + PREC_TABLE_u[pos_prec_table] + '% ' + VOLTAGE_TABLE[pos_volt_table] + 'V ' + TYPE_DI[0]
+                cursor.execute("insert into Ceramic_Capacitor_SMD([Id],[Description],[Comment],[Part Number],[Manufacturer],[Library Ref],[Footprint Ref 1],[Footprint Ref 2],[Footprint Ref 3],[Footprint Ref 4]) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (id_DB, make_description, cap_value_str, pn, manu, lib_ref, foot1_ref, foot2_ref, foot3_ref, foot4_ref))
+                id_DB=id_DB+1
+
     
-# 100M
-res_value_str = str(100) + 'M'
-for pos_power_table in range(len(POWER_TABLE)):
-    for pos_prec_table in range(len(PREC_TABLE)):
-        print(id_DB)
-        make_description = 'RES SMD ' + res_value_str + ' \u03A9 ' + '\u00B1' + PREC_TABLE[pos_prec_table] + '% ' + POWER_TABLE[pos_power_table] + 'W'
-        cursor.execute("insert into Resistor_SMD([Id],[Description],[Comment],[Library Ref],[Footprint Ref 1],[Footprint Ref 2],[Footprint Ref 3],[Footprint Ref 4]) values(?, ?, ?, ?, ?, ?, ?, ?)", (id_DB, make_description, res_value_str, lib_ref, foot1_ref, foot2_ref, foot3_ref, foot4_ref))
-        id_DB=id_DB+1
 
 # Commint to DB
 cursor.commit()
@@ -105,7 +113,7 @@ cursor.commit()
 # Print existing data in the DB   
 conn = pyodbc.connect(r'Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=D:\AlitumLibrary.accdb;')
 cursor = conn.cursor()
-cursor.execute('select * from Resistor_SMD')
+cursor.execute('select * from Ceramic_Capacitor_SMD')
 for row in cursor.fetchall():
     print (row)
 
