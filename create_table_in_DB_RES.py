@@ -47,7 +47,7 @@ PREC_TABLE= ["1", "5"] # Percentual values
 
 POWER_TABLE= ["1/10", "1/8", "1/4"] # Watts values
 
-FOORPRINT_REF_TABLE= ["0402", "0603", "0805", "1206"] # Foot values
+FOORPRINT_REF_TABLE= ["R0402", "R0603", "R0805", "R1206"] # Foot values
 
 lib_ref = 'RES' # Sch lib
 
@@ -61,6 +61,9 @@ cursor.execute('select * from Resistor_SMD')
 # Print existing data in the DB   
 for row in cursor.fetchall():
     print (row)
+
+pn = 'X'
+manu = 'X'
 
 #pos_prec_table =0 
 #pos_power_table = 0
@@ -80,7 +83,7 @@ for pos_power_table in range(len(POWER_TABLE)):
                 print(id_DB)
                 #cursor.execute("insert into Resistor_SMD([Id],[Value]) values(?, 1)", (data, ))
                 #cursor.execute("insert into Resistor_SMD([Id],[Comment]) values(?, ?)", (data, E96_RES_TABLE[id_loop]))
-                
+
                 #res_value = (round(E96_RES_TABLE[loop_res_value]*10**res_scale_rage,3))
 
                 # 1m, 10m, 100m (1m to 999m)
@@ -103,7 +106,7 @@ for pos_power_table in range(len(POWER_TABLE)):
                     res_value_str = str(x)
 
                 make_description = 'RES SMD ' + res_value_str + ' \u03A9 ' + '\u00B1' + PREC_TABLE[pos_prec_table] + '% ' + POWER_TABLE[pos_power_table] + 'W'
-                cursor.execute("insert into Resistor_SMD([Id],[Description],[Comment],[Library Ref],[Footprint Ref 1],[Footprint Ref 2],[Footprint Ref 3],[Footprint Ref 4]) values(?, ?, ?, ?, ?, ?, ?, ?)", (id_DB, make_description, res_value_str, lib_ref, foot1_ref, foot2_ref, foot3_ref, foot4_ref))
+                cursor.execute("insert into Resistor_SMD([Id],[Description],[Comment],[Part Number],[Manufacturer],[Library Ref],[Footprint Ref 1],[Footprint Ref 2],[Footprint Ref 3],[Footprint Ref 4]) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (id_DB, make_description, res_value_str, pn, manu, lib_ref, foot1_ref, foot2_ref, foot3_ref, foot4_ref))
                 id_DB=id_DB+1
 
 
@@ -112,7 +115,7 @@ res_value_str = str(0)
 for pos_power_table in range (len(POWER_TABLE)):
     print(id_DB)         
     make_description = 'RES SMD ' + res_value_str + 'R \u03A9 ' + POWER_TABLE[pos_power_table] + 'W'
-    cursor.execute("insert into Resistor_SMD([Id],[Description],[Comment],[Library Ref],[Footprint Ref 1],[Footprint Ref 2],[Footprint Ref 3],[Footprint Ref 4]) values(?, ?, ?, ?, ?, ?, ?, ?)", (id_DB, make_description, res_value_str, lib_ref, foot1_ref, foot2_ref, foot3_ref, foot4_ref))
+    cursor.execute("insert into Resistor_SMD([Id],[Description],[Comment],[Part Number],[Manufacturer],[Library Ref],[Footprint Ref 1],[Footprint Ref 2],[Footprint Ref 3],[Footprint Ref 4]) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (id_DB, make_description, res_value_str, pn, manu, lib_ref, foot1_ref, foot2_ref, foot3_ref, foot4_ref))
     id_DB=id_DB+1
     
 # 100M
@@ -121,7 +124,7 @@ for pos_power_table in range(len(POWER_TABLE)):
     for pos_prec_table in range(len(PREC_TABLE)):
         print(id_DB)
         make_description = 'RES SMD ' + res_value_str + ' \u03A9 ' + '\u00B1' + PREC_TABLE[pos_prec_table] + '% ' + POWER_TABLE[pos_power_table] + 'W'
-        cursor.execute("insert into Resistor_SMD([Id],[Description],[Comment],[Library Ref],[Footprint Ref 1],[Footprint Ref 2],[Footprint Ref 3],[Footprint Ref 4]) values(?, ?, ?, ?, ?, ?, ?, ?)", (id_DB, make_description, res_value_str, lib_ref, foot1_ref, foot2_ref, foot3_ref, foot4_ref))
+        cursor.execute("insert into Resistor_SMD([Id],[Description],[Comment],[Part Number],[Manufacturer],[Library Ref],[Footprint Ref 1],[Footprint Ref 2],[Footprint Ref 3],[Footprint Ref 4]) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (id_DB, make_description, res_value_str, pn, manu, lib_ref, foot1_ref, foot2_ref, foot3_ref, foot4_ref))
         id_DB=id_DB+1
 
 # Commint to DB
