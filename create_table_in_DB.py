@@ -119,12 +119,10 @@ for pos_power_table in range (len(POWER_TABLE)):
 res_value_str = str(100) + 'M'
 for pos_power_table in range(len(POWER_TABLE)):
     for pos_prec_table in range(len(PREC_TABLE)):
-        for res_scale_rage in range(num_decades-1):
-            for loop_res_value in range (len(E96_RES_TABLE)):
-                print(id_DB)
-                make_description = 'RES SMD ' + res_value_str + ' \u03A9 ' + '\u00B1' + PREC_TABLE[pos_prec_table] + '% ' + POWER_TABLE[pos_power_table] + 'W'
-                cursor.execute("insert into Resistor_SMD([ID],[Description],[Comment],[Library Ref],[Footprint Ref 1],[Footprint Ref 2],[Footprint Ref 3],[Footprint Ref 4]) values(?, ?, ?, ?, ?, ?, ?, ?)", (id_DB, make_description, res_value_str, lib_ref, foot1_ref, foot2_ref, foot3_ref, foot4_ref))
-                id_DB=id_DB+1
+        print(id_DB)
+        make_description = 'RES SMD ' + res_value_str + ' \u03A9 ' + '\u00B1' + PREC_TABLE[pos_prec_table] + '% ' + POWER_TABLE[pos_power_table] + 'W'
+        cursor.execute("insert into Resistor_SMD([ID],[Description],[Comment],[Library Ref],[Footprint Ref 1],[Footprint Ref 2],[Footprint Ref 3],[Footprint Ref 4]) values(?, ?, ?, ?, ?, ?, ?, ?)", (id_DB, make_description, res_value_str, lib_ref, foot1_ref, foot2_ref, foot3_ref, foot4_ref))
+        id_DB=id_DB+1
 
 # Commint to DB
 cursor.commit()
