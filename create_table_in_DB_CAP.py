@@ -80,7 +80,7 @@ for pos_volt_table in range(len(VOLTAGE_TABLE)):
                 else:
                     cap_value_str = str(x)
 
-                make_description = 'RES SMD ' + cap_value_str + 'F ' + '\u00B1' + PREC_TABLE[pos_prec_table] + '% ' + VOLTAGE_TABLE[pos_volt_table] + 'V ' + TYPE_DI[0]
+                make_description = 'CAP SMD ' + cap_value_str + 'F ' + '\u00B1' + PREC_TABLE[pos_prec_table] + '% ' + VOLTAGE_TABLE[pos_volt_table] + 'V ' + TYPE_DI[0]
                 cursor.execute("insert into Ceramic_Capacitor_SMD([Id],[Description],[Comment],[Part Number],[Manufacturer],[Library Ref],[Footprint Ref 1],[Footprint Ref 2],[Footprint Ref 3],[Footprint Ref 4]) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (id_DB, make_description, cap_value_str, pn, manu, lib_ref, foot1_ref, foot2_ref, foot3_ref, foot4_ref))
                 id_DB=id_DB+1
 
@@ -98,7 +98,7 @@ for pos_volt_table in range(len(VOLTAGE_TABLE)):
                 # 1u, 10u, 1000u (1k to 999u)
                 cap_value_str = str(round(CAP_TABLE[loop_cap_value]*10**cap_scale_rage,3)) + 'u'
 
-                make_description = 'RES SMD ' + cap_value_str + 'F ' + '\u00B1' + PREC_TABLE_u[pos_prec_table] + '% ' + VOLTAGE_TABLE[pos_volt_table] + 'V ' + TYPE_DI[0]
+                make_description = 'CAP SMD ' + cap_value_str + 'F ' + '\u00B1' + PREC_TABLE_u[pos_prec_table] + '% ' + VOLTAGE_TABLE[pos_volt_table] + 'V ' + TYPE_DI[0]
                 cursor.execute("insert into Ceramic_Capacitor_SMD([Id],[Description],[Comment],[Part Number],[Manufacturer],[Library Ref],[Footprint Ref 1],[Footprint Ref 2],[Footprint Ref 3],[Footprint Ref 4]) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (id_DB, make_description, cap_value_str, pn, manu, lib_ref, foot1_ref, foot2_ref, foot3_ref, foot4_ref))
                 id_DB=id_DB+1
 
